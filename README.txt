@@ -10,6 +10,9 @@ system PATH variable so that it can be called from a command line from any
 directory.
 
 --- Windows -------------
+
+TODO
+
 --- Mac / Linux ---------
 
 1) Install macport with the dmg from their website (https://www.macports.org/install.php)
