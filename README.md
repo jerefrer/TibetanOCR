@@ -1,4 +1,4 @@
-=== Installation ========
+# Installation
 
 Before you can use this tool you will need to have 3 things installed:
 - python
@@ -9,11 +9,11 @@ You'd also need to have the path to the `google-ocr` binary included in your
 system PATH variable so that it can be called from a command line from any
 directory.
 
---- Windows -------------
+## Windows
 
 TODO
 
---- Mac / Linux ---------
+## Mac / Linux
 
 1) Install macport with the dmg from their website (https://www.macports.org/install.php)
 2) Open a terminal (Spotlight search « term »), then type:
@@ -25,35 +25,36 @@ TODO
    ```
      python3 -m ensurepip --upgrade
      pip install google-drive-ocr
-     # echo 'export PATH="/opt/local/Library/Frameworks/Python.framework/Versions/3.11/bin:$PATH"' >> ~/.profile
-     # echo 'export PATH="/Users/'$USER'/Library/Python/3.11/bin:$PATH"' >> ~/.profile
+     echo 'export PATH="/opt/local/Library/Frameworks/Python.framework/Versions/3.11/bin:$PATH"' >> ~/.profile
+     echo 'export PATH="/Users/'$USER'/Library/Python/3.11/bin:$PATH"' >> ~/.profile
    ```
 3) There is one last step to go through on your first use.
    Follow the instructions for either images or pdf below, and after running
-   the corresponding script, refer to the "First use" section below to know
+   the corresponding script, refer to the [First use](#first-use) section below to know
    what to do.
 
-=== Usage ===============
+# Usage
 
---- Processing images ---
+## Processing images
 
-1) Put all your images as .jpg files in the `images` folder.
-2) Click the `process_images` file then wait until it finishes.
-  a) `process_images.sh`  on Mac/Linux
-  b) `process_images.bat` on Windows
-3) Enter the `images` folder
-4) Open the `output.odt` file
+1. Put all your images as .jpg files in the `images` folder.
+2. Click on the file appropriate to your system:
+   1. On Mac/Linux: `process_images.command`
+   2. On Windows: `process_images.bat`
+3. Wait until the script finishes
+4. Enter the `images` folder
+5. Open the `output.odt` file
 
 /!\ Remember to make a copy of `output.odt` or move it somewhere else because
     it will be overriden the next time you use this tool!
 
 
---- Processing a PDF ---
+## Processing a PDF
 
 1) Copy your PDF in the `pdf` folder and rename your PDF as `input.pdf`.
-2) Click on the `process_pdf` file and wait until it finishes.
-  a) `process_pdf.sh`  on Mac/Linux
-  b) `process_pdf.bat` on Windows
+2. Click on the file appropriate to your system:
+   1. On Mac/Linux: `process_pdf.command`
+   2. On Windows: `process_pdf.bat`
 3) Enter the `pdf` folder
 4) Open the `output.odt` file
 
@@ -63,7 +64,7 @@ TODO
     it will be overriden the next time you use this tool!
 
 
---- First use ----------
+## First use
 
 When running one of the the two scripts for the first time, your web browser
 will be opened and will ask you to login to one of your Google accounts.
