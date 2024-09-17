@@ -6,34 +6,12 @@ Before you can use this tool you will need to have 3 things installed:
 - the `google-ocr` package for python
 
 You'd also need to have the path to the `google-ocr` binary included in your
-system PATH variable so that it can be called from a command line from any
-directory.
-
-## Windows
-
-TODO
-
-## Mac / Linux
-
-1) Install macport with the dmg from their website (https://www.macports.org/install.php)
-2) Open a terminal (Spotlight search « term »), then type:
-   `sudo port install python311 poppler`
-   Type your password when asked.
-   Wait for all the tools to be downloaded and installed, this can take
-   some time and might use around 1Go of drive space.
-   Then type in the terminal:
-   ```
-     python3 -m ensurepip --upgrade
-     pip install google-drive-ocr
-     echo 'export PATH="/opt/local/Library/Frameworks/Python.framework/Versions/3.11/bin:$PATH"' >> ~/.profile
-     echo 'export PATH="/Users/'$USER'/Library/Python/3.11/bin:$PATH"' >> ~/.profile
-   ```
-3) There is one last step to go through on your first use.
-   Follow the instructions for either images or pdf below, and after running
-   the corresponding script, refer to the [First use](#first-use) section below to know
-   what to do.
+system PATH variable so that it can be called from any directory.
 
 # Usage
+
+ℹ️ If it's the first time you use TibetanOCR, please refer to the 
+[First use](#first-use) section below.
 
 ## Processing images
 
@@ -43,10 +21,10 @@ TODO
    2. On Windows: `process_images.bat`
 3. Wait until the script finishes
 4. Enter the `images` folder
-5. Open the `output.odt` file
+5. See the result in the `output.odt` file (or `.txt` if you don't have LibreOffice)
 
-/!\ Remember to make a copy of `output.odt` or move it somewhere else because
-    it will be overriden the next time you use this tool!
+⚠️ Don't work directly on `output.odt` but move or copy it somewhere else because
+  it will be overriden the next time you use this tool!
 
 
 ## Processing a PDF
@@ -56,12 +34,13 @@ TODO
    1. On Mac/Linux: `process_pdf.command`
    2. On Windows: `process_pdf.bat`
 3) Enter the `pdf` folder
-4) Open the `output.odt` file
+4) See the result in the `output.odt` file (or `.txt` if you don't have LibreOffice)
 
-/!\ The process will generate a lot of temporary files in the `pdf` folder so
-    don't panic, just wait, the temporary files will be cleaned up at the end.
-/!\ Remember to make a copy of `output.odt` or move it somewhere else because
-    it will be overriden the next time you use this tool!
+⚠️ The process will generate a lot of temporary files in the `pdf` folder so
+  don't panic, just wait, the temporary files will be cleaned up at the end.
+        
+⚠️ Don't work directly on `output.odt` but move or copy it somewhere else because
+  it will be overriden the next time you use this tool!
 
 
 ## First use
@@ -83,4 +62,4 @@ close the web page.
 
 Coming back to the terminal you will see that the OCR process is now underway
 or already finished. Go to your `images/` or `pdf/` directory to find the
-`output.txt` file with the OCRed text.
+`output.odt` or `.txt` file with the OCRed text.
