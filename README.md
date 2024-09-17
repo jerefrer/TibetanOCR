@@ -10,7 +10,7 @@ system PATH variable so that it can be called from any directory.
 
 # Usage
 
-ℹ️ If it's the first time you use TibetanOCR, please refer to the 
+👋 If it's the first time you use TibetanOCR, please refer to the 
 [First use](#first-use) section below.
 
 ## Processing images
