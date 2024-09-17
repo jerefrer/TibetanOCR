@@ -2,7 +2,7 @@
 
 Before you can use this tool you will need to have 3 things installed:
 - python
-- the `poppler` package for python
+- poppler
 - the `google-ocr` package for python
 
 You'd also need to have the path to the `google-ocr` binary included in your
