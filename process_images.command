@@ -123,7 +123,7 @@ print_header "Running OCR on Images"
 print_info "This may take some time depending on the number of images"
 echo "$YELLOW$BOLD[TIME]$RESET $CYAN Starting OCR process...$RESET"
 
-google-ocr --client-secret client_secret.json --image-dir images/ --extension .jpg --workers 4 --no-keep
+google-ocr --client-secret client_secret.json --image-dir images/ --extension .jpg --workers 8 --no-keep
 
 # Process the output files
 print_header "Processing OCR Results"
