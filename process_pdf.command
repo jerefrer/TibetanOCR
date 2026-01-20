@@ -48,12 +48,17 @@ for pdf_file in *.pdf; do
   
   echo "⚙️ Processing: $pdf_file"
   
+  # Extract images from PDF using pdftoppm (much faster than google-ocr's built-in extraction)
+  echo "📄 Extracting images from PDF..."
+  pdftoppm -jpeg -jpegopt quality=95 "$pdf_file" "${base_name}.page"
+  
   # Start the resize daemon in background
   resize_daemon &
   daemon_pid=$!
   
-  # Run OCR with the original filename
-  google-ocr --client-secret ../client_secret.json --pdf "$pdf_file" --workers 8 --no-keep --verbose
+  # Run OCR on the extracted images
+  echo "🔍 Running OCR on extracted images..."
+  google-ocr --client-secret ../client_secret.json --image-dir . --extension .jpg --workers 8 --no-keep --verbose
   
   # Stop the resize daemon
   kill $daemon_pid 2>/dev/null
