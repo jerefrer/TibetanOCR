@@ -67,5 +67,5 @@ if [ -z "$OUT" ]; then
   exit 1
 fi
 
-printf '%s' "$OUT" | pbcopy
+printf '%s' "$OUT" | LC_CTYPE=UTF-8 pbcopy
 notify "Text copied to clipboard ✓"
