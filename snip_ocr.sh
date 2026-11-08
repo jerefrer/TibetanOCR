@@ -8,9 +8,28 @@ set -u
 cd "$(dirname -- "$0")"
 PROJECT_DIR="$(pwd)"
 
+LOG_DIR="$HOME/Library/Logs/TibetanOCR"
+LOG_FILE="$LOG_DIR/snip.log"
+mkdir -p "$LOG_DIR"
+
+log() {
+  printf '[%s] %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$1" >>"$LOG_FILE"
+}
+
 notify() {
   osascript -e "display notification \"$1\" with title \"Tibetan OCR\"" >/dev/null 2>&1 || true
 }
+
+KEEP_TMP=0
+fail() {
+  msg="$1"
+  log "FAIL: $msg"
+  KEEP_TMP=1
+  notify "$msg — see $LOG_FILE"
+  exit 1
+}
+
+log "--- run start (pid $$) ---"
 
 # GUI launchers (Shortcuts, Automator) do not load the interactive shell
 # profile, so binaries installed via asdf / pyenv / mise / Homebrew / pipx
@@ -29,43 +48,51 @@ export PATH
 # Escape hatch for unusual installs: users can export TIBETAN_OCR_BIN with
 # an absolute path to the google-ocr binary.
 OCR_BIN="${TIBETAN_OCR_BIN:-$(command -v google-ocr 2>/dev/null || true)}"
+log "resolved OCR_BIN: ${OCR_BIN:-<empty>}"
 
 if [ -z "$OCR_BIN" ] || [ ! -x "$OCR_BIN" ]; then
-  notify "google-ocr not found. Set TIBETAN_OCR_BIN or add it to PATH."
-  exit 1
+  fail "google-ocr not found. Set TIBETAN_OCR_BIN or add it to PATH."
 fi
 
 if [ ! -f "$PROJECT_DIR/client_secret.json" ]; then
-  notify "client_secret.json missing in project dir"
-  exit 1
+  fail "client_secret.json missing in project dir"
 fi
 
 TMP_DIR="$(mktemp -d -t tibetan_snip)"
-trap 'rm -rf "$TMP_DIR"' EXIT
+trap '[ "$KEEP_TMP" = 1 ] && log "kept temp dir: $TMP_DIR" || rm -rf "$TMP_DIR"' EXIT
 IMG="$TMP_DIR/snip.jpg"
+log "temp dir: $TMP_DIR"
 
 # Interactive rectangular selection. User can cancel with Esc (no file written).
 screencapture -i -t jpg -x "$IMG"
-[ -f "$IMG" ] || exit 0
+if [ ! -f "$IMG" ]; then
+  log "capture cancelled by user"
+  exit 0
+fi
+log "captured image: $(stat -f '%z bytes' "$IMG" 2>/dev/null || echo '?')"
 
 notify "OCR in progress..."
 
-if ! "$OCR_BIN" \
+OCR_STATUS=0
+"$OCR_BIN" \
     --client-secret "$PROJECT_DIR/client_secret.json" \
     --image-dir "$TMP_DIR" \
     --extension .jpg \
     --workers 1 \
-    --no-keep >/dev/null 2>&1; then
-  notify "OCR failed"
-  exit 1
+    --no-keep >>"$LOG_FILE" 2>&1 || OCR_STATUS=$?
+
+if [ "$OCR_STATUS" -ne 0 ]; then
+  fail "OCR failed (exit $OCR_STATUS)"
 fi
 
 # google-ocr writes one .txt per input image into the same directory.
 OUT="$(find "$TMP_DIR" -maxdepth 1 -name '*.txt' -print0 | xargs -0 cat)"
 if [ -z "$OUT" ]; then
-  notify "OCR produced no text"
-  exit 1
+  TXT_COUNT="$(find "$TMP_DIR" -maxdepth 1 -name '*.txt' | wc -l | tr -d ' ')"
+  log "no text produced; .txt files found: $TXT_COUNT"
+  fail "OCR produced no text"
 fi
 
 printf '%s' "$OUT" | LC_CTYPE=UTF-8 pbcopy
+log "OK: ${#OUT} chars copied to clipboard"
 notify "Text copied to clipboard ✓"
