@@ -1,3 +1,5 @@
 .DS_Store
 .tool-versions
 client_secret.json
+.claude/
+samples/
